@@ -1,0 +1,2203 @@
+
+1. Simple Logic Flow
+
+	1) main   - 	mutex&cond init
+            	    	launch Schedule
+            	  	prepare ingredient for threads(info & vehicle count for each group)
+            	  	START TRHEADING
+            	  	delay between group
+            	  	wait for all threads
+
+	2) thread - Arrive 
+             		print arrival
+             		update vehicle status of north & south bound
+	             	wait until other vehicles in same group to arrive
+        	     	restriction logic starts
+			mutex lock
+			   car
+				wait if there trucks waiting
+				wait if bridge's direction is not same
+				wait if bridge is full
+				wait if there is car in bridge and new truck arrived
+		   	   truck
+				wait if bridge is full
+				wait if bridge is not same
+ 	            	update status of N/S parkingLot
+        	     	update status of bridge
+			print crossing
+			mutex unlock
+        	    Cross
+             		sleep
+             	    Leave
+			mutex lock
+             		update status of bridge
+			print leaving
+			   car
+				switch bridge's direction if no cars waiting on its direction
+			   truck
+				switch bridge's direction if no trucks waiting on its opposite direction
+			mutex signal
+			mutex unlock
+
+
+
+
+
+2. Output
+
+
+	1) ./bridge_crossing 1
+
+-------------------------------------------------------------
+Group 1 Car #1 (northbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #2 (northbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #3 (northbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #4 (northbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #5 (northbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #6 (southbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #7 (southbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #8 (southbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #9 (northbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #10 (southbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #1 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 2, Car 3, Car 4, Car 5, Car 9]
+Waiting vehicles(southBound): [Car 6, Car 7, Car 8, Car 10]
+Vehicles on the bridge(northBound): [Car 1]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #2 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 3, Car 4, Car 5, Car 9]
+Waiting vehicles(southBound): [Car 6, Car 7, Car 8, Car 10]
+Vehicles on the bridge(northBound): [Car 1, Car 2]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #3 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 4, Car 5, Car 9]
+Waiting vehicles(southBound): [Car 6, Car 7, Car 8, Car 10]
+Vehicles on the bridge(northBound): [Car 1, Car 2, Car 3]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #1 (northbound) EXITING...
+Waiting vehicles(northBound): [Car 4, Car 5, Car 9]
+Waiting vehicles(southBound): [Car 6, Car 7, Car 8, Car 10]
+Vehicles on the bridge(northBound): [Car 2, Car 3]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #4 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 5, Car 9]
+Waiting vehicles(southBound): [Car 6, Car 7, Car 8, Car 10]
+Vehicles on the bridge(northBound): [Car 2, Car 3, Car 4]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #2 (northbound) EXITING...
+Waiting vehicles(northBound): [Car 5, Car 9]
+Waiting vehicles(southBound): [Car 6, Car 7, Car 8, Car 10]
+Vehicles on the bridge(northBound): [Car 3, Car 4]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #3 (northbound) EXITING...
+Waiting vehicles(northBound): [Car 5, Car 9]
+Waiting vehicles(southBound): [Car 6, Car 7, Car 8, Car 10]
+Vehicles on the bridge(northBound): [Car 4]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #5 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 9]
+Waiting vehicles(southBound): [Car 6, Car 7, Car 8, Car 10]
+Vehicles on the bridge(northBound): [Car 4, Car 5]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #9 (northbound) CROSSING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Car 6, Car 7, Car 8, Car 10]
+Vehicles on the bridge(northBound): [Car 4, Car 5, Car 9]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #4 (northbound) EXITING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Car 6, Car 7, Car 8, Car 10]
+Vehicles on the bridge(northBound): [Car 5, Car 9]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #5 (northbound) EXITING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Car 6, Car 7, Car 8, Car 10]
+Vehicles on the bridge(northBound): [Car 9]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #9 (northbound) EXITING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Car 6, Car 7, Car 8, Car 10]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #10 (southbound) CROSSING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Car 6, Car 7, Car 8]
+Vehicles on the bridge(southBound): [Car 10]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #8 (southbound) CROSSING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Car 6, Car 7]
+Vehicles on the bridge(southBound): [Car 10, Car 8]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #6 (southbound) CROSSING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Car 7]
+Vehicles on the bridge(southBound): [Car 10, Car 8, Car 6]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #10 (southbound) EXITING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Car 7]
+Vehicles on the bridge(southBound): [Car 8, Car 6]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #7 (southbound) CROSSING...
+no vehicle waiting on northBound
+no vehicle waiting on southBound
+Vehicles on the bridge(southBound): [Car 8, Car 6, Car 7]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #6 (southbound) EXITING...
+no vehicle waiting on northBound
+no vehicle waiting on southBound
+Vehicles on the bridge(southBound): [Car 8, Car 7]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #8 (southbound) EXITING...
+no vehicle waiting on northBound
+no vehicle waiting on southBound
+Vehicles on the bridge(southBound): [Car 7]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #7 (southbound) EXITING...
+no vehicle waiting on northBound
+no vehicle waiting on southBound
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #11 (northbound) arrived.
+-------------------------------------------------------------
+Group 2 Car #12 (southbound) arrived.
+-------------------------------------------------------------
+Group 2 Car #13 (southbound) arrived.
+-------------------------------------------------------------
+Group 2 Car #14 (northbound) arrived.
+-------------------------------------------------------------
+Group 2 Car #15 (northbound) arrived.
+-------------------------------------------------------------
+Group 2 Car #16 (northbound) arrived.
+-------------------------------------------------------------
+Group 2 Car #17 (northbound) arrived.
+-------------------------------------------------------------
+Group 2 Car #18 (southbound) arrived.
+-------------------------------------------------------------
+Group 2 Car #19 (northbound) arrived.
+-------------------------------------------------------------
+Group 2 Car #20 (northbound) arrived.
+-------------------------------------------------------------
+Group 2 Car #20 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 11, Car 14, Car 15, Car 16, Car 17, Car 19]
+Waiting vehicles(southBound): [Car 12, Car 13, Car 18]
+Vehicles on the bridge(northBound): [Car 20]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #14 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 11, Car 15, Car 16, Car 17, Car 19]
+Waiting vehicles(southBound): [Car 12, Car 13, Car 18]
+Vehicles on the bridge(northBound): [Car 20, Car 14]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #11 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 15, Car 16, Car 17, Car 19]
+Waiting vehicles(southBound): [Car 12, Car 13, Car 18]
+Vehicles on the bridge(northBound): [Car 20, Car 14, Car 11]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #20 (northbound) EXITING...
+Waiting vehicles(northBound): [Car 15, Car 16, Car 17, Car 19]
+Waiting vehicles(southBound): [Car 12, Car 13, Car 18]
+Vehicles on the bridge(northBound): [Car 14, Car 11]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #15 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 16, Car 17, Car 19]
+Waiting vehicles(southBound): [Car 12, Car 13, Car 18]
+Vehicles on the bridge(northBound): [Car 14, Car 11, Car 15]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #11 (northbound) EXITING...
+Waiting vehicles(northBound): [Car 16, Car 17, Car 19]
+Waiting vehicles(southBound): [Car 12, Car 13, Car 18]
+Vehicles on the bridge(northBound): [Car 14, Car 15]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #17 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 16, Car 19]
+Waiting vehicles(southBound): [Car 12, Car 13, Car 18]
+Vehicles on the bridge(northBound): [Car 14, Car 15, Car 17]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #14 (northbound) EXITING...
+Waiting vehicles(northBound): [Car 16, Car 19]
+Waiting vehicles(southBound): [Car 12, Car 13, Car 18]
+Vehicles on the bridge(northBound): [Car 15, Car 17]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #16 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 19]
+Waiting vehicles(southBound): [Car 12, Car 13, Car 18]
+Vehicles on the bridge(northBound): [Car 15, Car 17, Car 16]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #15 (northbound) EXITING...
+Waiting vehicles(northBound): [Car 19]
+Waiting vehicles(southBound): [Car 12, Car 13, Car 18]
+Vehicles on the bridge(northBound): [Car 17, Car 16]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #19 (northbound) CROSSING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Car 12, Car 13, Car 18]
+Vehicles on the bridge(northBound): [Car 17, Car 16, Car 19]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #16 (northbound) EXITING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Car 12, Car 13, Car 18]
+Vehicles on the bridge(northBound): [Car 17, Car 19]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #17 (northbound) EXITING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Car 12, Car 13, Car 18]
+Vehicles on the bridge(northBound): [Car 19]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #19 (northbound) EXITING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Car 12, Car 13, Car 18]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #13 (southbound) CROSSING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Car 12, Car 18]
+Vehicles on the bridge(southBound): [Car 13]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #18 (southbound) CROSSING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Car 12]
+Vehicles on the bridge(southBound): [Car 13, Car 18]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #12 (southbound) CROSSING...
+no vehicle waiting on northBound
+no vehicle waiting on southBound
+Vehicles on the bridge(southBound): [Car 13, Car 18, Car 12]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #12 (southbound) EXITING...
+no vehicle waiting on northBound
+no vehicle waiting on southBound
+Vehicles on the bridge(southBound): [Car 13, Car 18]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #18 (southbound) EXITING...
+no vehicle waiting on northBound
+no vehicle waiting on southBound
+Vehicles on the bridge(southBound): [Car 13]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #13 (southbound) EXITING...
+no vehicle waiting on northBound
+no vehicle waiting on southBound
+no vehicle crossing on bridge
+-------------------------------------------------------------
+
+
+
+
+
+
+
+
+	2) ./bridge_crossing 2
+
+-------------------------------------------------------------
+Group 1 Truck #1 (northbound) arrived.
+-------------------------------------------------------------
+Group 1 Truck #2 (southbound) arrived.
+-------------------------------------------------------------
+Group 1 Truck #3 (southbound) arrived.
+-------------------------------------------------------------
+Group 1 Truck #4 (northbound) arrived.
+-------------------------------------------------------------
+Group 1 Truck #5 (southbound) arrived.
+-------------------------------------------------------------
+Group 1 Truck #6 (southbound) arrived.
+-------------------------------------------------------------
+Group 1 Truck #9 (southbound) arrived.
+-------------------------------------------------------------
+Group 1 Truck #7 (northbound) arrived.
+-------------------------------------------------------------
+Group 1 Truck #10 (southbound) arrived.
+-------------------------------------------------------------
+Group 1 Truck #8 (southbound) arrived.
+-------------------------------------------------------------
+Group 1 Truck #1 (northbound) CROSSING...
+Waiting vehicles(northBound): [Truck 4, Truck 7]
+Waiting vehicles(southBound): [Truck 2, Truck 3, Truck 5, Truck 6, Truck 9, Truck 10, Truck 8]
+Vehicles on the bridge(northBound): [Truck 1]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #1 (northbound) EXITING...
+Waiting vehicles(northBound): [Truck 4, Truck 7]
+Waiting vehicles(southBound): [Truck 2, Truck 3, Truck 5, Truck 6, Truck 9, Truck 10, Truck 8]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #8 (southbound) CROSSING...
+Waiting vehicles(northBound): [Truck 4, Truck 7]
+Waiting vehicles(southBound): [Truck 2, Truck 3, Truck 5, Truck 6, Truck 9, Truck 10]
+Vehicles on the bridge(southBound): [Truck 8]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #8 (southbound) EXITING...
+Waiting vehicles(northBound): [Truck 4, Truck 7]
+Waiting vehicles(southBound): [Truck 2, Truck 3, Truck 5, Truck 6, Truck 9, Truck 10]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #7 (northbound) CROSSING...
+Waiting vehicles(northBound): [Truck 4]
+Waiting vehicles(southBound): [Truck 2, Truck 3, Truck 5, Truck 6, Truck 9, Truck 10]
+Vehicles on the bridge(northBound): [Truck 7]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #7 (northbound) EXITING...
+Waiting vehicles(northBound): [Truck 4]
+Waiting vehicles(southBound): [Truck 2, Truck 3, Truck 5, Truck 6, Truck 9, Truck 10]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #3 (southbound) CROSSING...
+Waiting vehicles(northBound): [Truck 4]
+Waiting vehicles(southBound): [Truck 2, Truck 5, Truck 6, Truck 9, Truck 10]
+Vehicles on the bridge(southBound): [Truck 3]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #3 (southbound) EXITING...
+Waiting vehicles(northBound): [Truck 4]
+Waiting vehicles(southBound): [Truck 2, Truck 5, Truck 6, Truck 9, Truck 10]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #4 (northbound) CROSSING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Truck 2, Truck 5, Truck 6, Truck 9, Truck 10]
+Vehicles on the bridge(northBound): [Truck 4]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Truck #11 (southbound) arrived.
+-------------------------------------------------------------
+Group 2 Truck #14 (southbound) arrived.
+-------------------------------------------------------------
+Group 2 Truck #12 (southbound) arrived.
+-------------------------------------------------------------
+Group 2 Truck #16 (northbound) arrived.
+-------------------------------------------------------------
+Group 2 Truck #15 (southbound) arrived.
+-------------------------------------------------------------
+Group 2 Truck #13 (southbound) arrived.
+-------------------------------------------------------------
+Group 2 Truck #17 (southbound) arrived.
+-------------------------------------------------------------
+Group 2 Truck #18 (southbound) arrived.
+-------------------------------------------------------------
+Group 2 Truck #19 (southbound) arrived.
+-------------------------------------------------------------
+Group 2 Truck #20 (northbound) arrived.
+-------------------------------------------------------------
+Group 1 Truck #4 (northbound) EXITING...
+Waiting vehicles(northBound): [Truck 16, Truck 20]
+Waiting vehicles(southBound): [Truck 2, Truck 5, Truck 6, Truck 9, Truck 10, Truck 11, Truck 14, Truck 12, Truck 15, Truck 13, Truck 17, Truck 18, Truck 19]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #6 (southbound) CROSSING...
+Waiting vehicles(northBound): [Truck 16, Truck 20]
+Waiting vehicles(southBound): [Truck 2, Truck 5, Truck 9, Truck 10, Truck 11, Truck 14, Truck 12, Truck 15, Truck 13, Truck 17, Truck 18, Truck 19]
+Vehicles on the bridge(southBound): [Truck 6]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #6 (southbound) EXITING...
+Waiting vehicles(northBound): [Truck 16, Truck 20]
+Waiting vehicles(southBound): [Truck 2, Truck 5, Truck 9, Truck 10, Truck 11, Truck 14, Truck 12, Truck 15, Truck 13, Truck 17, Truck 18, Truck 19]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Truck #20 (northbound) CROSSING...
+Waiting vehicles(northBound): [Truck 16]
+Waiting vehicles(southBound): [Truck 2, Truck 5, Truck 9, Truck 10, Truck 11, Truck 14, Truck 12, Truck 15, Truck 13, Truck 17, Truck 18, Truck 19]
+Vehicles on the bridge(northBound): [Truck 20]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Truck #20 (northbound) EXITING...
+Waiting vehicles(northBound): [Truck 16]
+Waiting vehicles(southBound): [Truck 2, Truck 5, Truck 9, Truck 10, Truck 11, Truck 14, Truck 12, Truck 15, Truck 13, Truck 17, Truck 18, Truck 19]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #10 (southbound) CROSSING...
+Waiting vehicles(northBound): [Truck 16]
+Waiting vehicles(southBound): [Truck 2, Truck 5, Truck 9, Truck 11, Truck 14, Truck 12, Truck 15, Truck 13, Truck 17, Truck 18, Truck 19]
+Vehicles on the bridge(southBound): [Truck 10]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #10 (southbound) EXITING...
+Waiting vehicles(northBound): [Truck 16]
+Waiting vehicles(southBound): [Truck 2, Truck 5, Truck 9, Truck 11, Truck 14, Truck 12, Truck 15, Truck 13, Truck 17, Truck 18, Truck 19]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Truck #16 (northbound) CROSSING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Truck 2, Truck 5, Truck 9, Truck 11, Truck 14, Truck 12, Truck 15, Truck 13, Truck 17, Truck 18, Truck 19]
+Vehicles on the bridge(northBound): [Truck 16]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Truck #16 (northbound) EXITING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Truck 2, Truck 5, Truck 9, Truck 11, Truck 14, Truck 12, Truck 15, Truck 13, Truck 17, Truck 18, Truck 19]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Truck #19 (southbound) CROSSING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Truck 2, Truck 5, Truck 9, Truck 11, Truck 14, Truck 12, Truck 15, Truck 13, Truck 17, Truck 18]
+Vehicles on the bridge(southBound): [Truck 19]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Truck #19 (southbound) EXITING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Truck 2, Truck 5, Truck 9, Truck 11, Truck 14, Truck 12, Truck 15, Truck 13, Truck 17, Truck 18]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Truck #15 (southbound) CROSSING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Truck 2, Truck 5, Truck 9, Truck 11, Truck 14, Truck 12, Truck 13, Truck 17, Truck 18]
+Vehicles on the bridge(southBound): [Truck 15]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Truck #15 (southbound) EXITING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Truck 2, Truck 5, Truck 9, Truck 11, Truck 14, Truck 12, Truck 13, Truck 17, Truck 18]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Truck #18 (southbound) CROSSING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Truck 2, Truck 5, Truck 9, Truck 11, Truck 14, Truck 12, Truck 13, Truck 17]
+Vehicles on the bridge(southBound): [Truck 18]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Truck #18 (southbound) EXITING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Truck 2, Truck 5, Truck 9, Truck 11, Truck 14, Truck 12, Truck 13, Truck 17]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Truck #13 (southbound) CROSSING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Truck 2, Truck 5, Truck 9, Truck 11, Truck 14, Truck 12, Truck 17]
+Vehicles on the bridge(southBound): [Truck 13]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Truck #13 (southbound) EXITING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Truck 2, Truck 5, Truck 9, Truck 11, Truck 14, Truck 12, Truck 17]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Truck #17 (southbound) CROSSING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Truck 2, Truck 5, Truck 9, Truck 11, Truck 14, Truck 12]
+Vehicles on the bridge(southBound): [Truck 17]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Truck #17 (southbound) EXITING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Truck 2, Truck 5, Truck 9, Truck 11, Truck 14, Truck 12]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #5 (southbound) CROSSING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Truck 2, Truck 9, Truck 11, Truck 14, Truck 12]
+Vehicles on the bridge(southBound): [Truck 5]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #5 (southbound) EXITING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Truck 2, Truck 9, Truck 11, Truck 14, Truck 12]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #9 (southbound) CROSSING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Truck 2, Truck 11, Truck 14, Truck 12]
+Vehicles on the bridge(southBound): [Truck 9]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #9 (southbound) EXITING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Truck 2, Truck 11, Truck 14, Truck 12]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Truck #11 (southbound) CROSSING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Truck 2, Truck 14, Truck 12]
+Vehicles on the bridge(southBound): [Truck 11]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Truck #11 (southbound) EXITING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Truck 2, Truck 14, Truck 12]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Truck #12 (southbound) CROSSING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Truck 2, Truck 14]
+Vehicles on the bridge(southBound): [Truck 12]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Truck #12 (southbound) EXITING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Truck 2, Truck 14]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #2 (southbound) CROSSING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Truck 14]
+Vehicles on the bridge(southBound): [Truck 2]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #2 (southbound) EXITING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Truck 14]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Truck #14 (southbound) CROSSING...
+no vehicle waiting on northBound
+no vehicle waiting on southBound
+Vehicles on the bridge(southBound): [Truck 14]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Truck #14 (southbound) EXITING...
+no vehicle waiting on northBound
+no vehicle waiting on southBound
+no vehicle crossing on bridge
+-------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+	3) ./bridge_crossing 3
+
+-------------------------------------------------------------
+Group 1 Truck #1 (northbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #1 (southbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #4 (southbound) arrived.
+-------------------------------------------------------------
+Group 1 Truck #2 (northbound) arrived.
+-------------------------------------------------------------
+Group 1 Truck #3 (southbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #7 (northbound) arrived.
+-------------------------------------------------------------
+Group 1 Truck #4 (southbound) arrived.
+-------------------------------------------------------------
+Group 1 Truck #10 (southbound) arrived.
+-------------------------------------------------------------
+Group 1 Truck #11 (northbound) arrived.
+-------------------------------------------------------------
+Group 1 Truck #7 (southbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #5 (northbound) arrived.
+-------------------------------------------------------------
+Group 1 Truck #8 (northbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #6 (northbound) arrived.
+-------------------------------------------------------------
+Group 1 Truck #9 (northbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #8 (southbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #2 (southbound) arrived.
+-------------------------------------------------------------
+Group 1 Truck #5 (southbound) arrived.
+-------------------------------------------------------------
+Group 1 Truck #6 (northbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #9 (southbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #3 (southbound) arrived.
+-------------------------------------------------------------
+Group 1 Truck #1 (northbound) CROSSING...
+Waiting vehicles(northBound): [Truck 2, Car 7, Truck 11, Car 5, Truck 8, Car 6, Truck 9, Truck 6]
+Waiting vehicles(southBound): [Car 1, Car 4, Truck 3, Truck 4, Truck 10, Truck 7, Car 8, Car 2, Truck 5, Car 9, Car 3]
+Vehicles on the bridge(northBound): [Truck 1]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #1 (northbound) EXITING...
+Waiting vehicles(northBound): [Truck 2, Car 7, Truck 11, Car 5, Truck 8, Car 6, Truck 9, Truck 6]
+Waiting vehicles(southBound): [Car 1, Car 4, Truck 3, Truck 4, Truck 10, Truck 7, Car 8, Car 2, Truck 5, Car 9, Car 3]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #4 (southbound) CROSSING...
+Waiting vehicles(northBound): [Truck 2, Car 7, Truck 11, Car 5, Truck 8, Car 6, Truck 9, Truck 6]
+Waiting vehicles(southBound): [Car 1, Car 4, Truck 3, Truck 10, Truck 7, Car 8, Car 2, Truck 5, Car 9, Car 3]
+Vehicles on the bridge(southBound): [Truck 4]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #4 (southbound) EXITING...
+Waiting vehicles(northBound): [Truck 2, Car 7, Truck 11, Car 5, Truck 8, Car 6, Truck 9, Truck 6]
+Waiting vehicles(southBound): [Car 1, Car 4, Truck 3, Truck 10, Truck 7, Car 8, Car 2, Truck 5, Car 9, Car 3]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #11 (northbound) CROSSING...
+Waiting vehicles(northBound): [Truck 2, Car 7, Car 5, Truck 8, Car 6, Truck 9, Truck 6]
+Waiting vehicles(southBound): [Car 1, Car 4, Truck 3, Truck 10, Truck 7, Car 8, Car 2, Truck 5, Car 9, Car 3]
+Vehicles on the bridge(northBound): [Truck 11]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #11 (northbound) EXITING...
+Waiting vehicles(northBound): [Truck 2, Car 7, Car 5, Truck 8, Car 6, Truck 9, Truck 6]
+Waiting vehicles(southBound): [Car 1, Car 4, Truck 3, Truck 10, Truck 7, Car 8, Car 2, Truck 5, Car 9, Car 3]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #10 (southbound) CROSSING...
+Waiting vehicles(northBound): [Truck 2, Car 7, Car 5, Truck 8, Car 6, Truck 9, Truck 6]
+Waiting vehicles(southBound): [Car 1, Car 4, Truck 3, Truck 7, Car 8, Car 2, Truck 5, Car 9, Car 3]
+Vehicles on the bridge(southBound): [Truck 10]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #10 (southbound) EXITING...
+Waiting vehicles(northBound): [Truck 2, Car 7, Car 5, Truck 8, Car 6, Truck 9, Truck 6]
+Waiting vehicles(southBound): [Car 1, Car 4, Truck 3, Truck 7, Car 8, Car 2, Truck 5, Car 9, Car 3]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #9 (northbound) CROSSING...
+Waiting vehicles(northBound): [Truck 2, Car 7, Car 5, Truck 8, Car 6, Truck 6]
+Waiting vehicles(southBound): [Car 1, Car 4, Truck 3, Truck 7, Car 8, Car 2, Truck 5, Car 9, Car 3]
+Vehicles on the bridge(northBound): [Truck 9]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #9 (northbound) EXITING...
+Waiting vehicles(northBound): [Truck 2, Car 7, Car 5, Truck 8, Car 6, Truck 6]
+Waiting vehicles(southBound): [Car 1, Car 4, Truck 3, Truck 7, Car 8, Car 2, Truck 5, Car 9, Car 3]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #7 (southbound) CROSSING...
+Waiting vehicles(northBound): [Truck 2, Car 7, Car 5, Truck 8, Car 6, Truck 6]
+Waiting vehicles(southBound): [Car 1, Car 4, Truck 3, Car 8, Car 2, Truck 5, Car 9, Car 3]
+Vehicles on the bridge(southBound): [Truck 7]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #7 (southbound) EXITING...
+Waiting vehicles(northBound): [Truck 2, Car 7, Car 5, Truck 8, Car 6, Truck 6]
+Waiting vehicles(southBound): [Car 1, Car 4, Truck 3, Car 8, Car 2, Truck 5, Car 9, Car 3]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #2 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 7, Car 5, Truck 8, Car 6, Truck 6]
+Waiting vehicles(southBound): [Car 1, Car 4, Truck 3, Car 8, Car 2, Truck 5, Car 9, Car 3]
+Vehicles on the bridge(northBound): [Truck 2]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #2 (northbound) EXITING...
+Waiting vehicles(northBound): [Car 7, Car 5, Truck 8, Car 6, Truck 6]
+Waiting vehicles(southBound): [Car 1, Car 4, Truck 3, Car 8, Car 2, Truck 5, Car 9, Car 3]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #5 (southbound) CROSSING...
+Waiting vehicles(northBound): [Car 7, Car 5, Truck 8, Car 6, Truck 6]
+Waiting vehicles(southBound): [Car 1, Car 4, Truck 3, Car 8, Car 2, Car 9, Car 3]
+Vehicles on the bridge(southBound): [Truck 5]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #5 (southbound) EXITING...
+Waiting vehicles(northBound): [Car 7, Car 5, Truck 8, Car 6, Truck 6]
+Waiting vehicles(southBound): [Car 1, Car 4, Truck 3, Car 8, Car 2, Car 9, Car 3]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #8 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 7, Car 5, Car 6, Truck 6]
+Waiting vehicles(southBound): [Car 1, Car 4, Truck 3, Car 8, Car 2, Car 9, Car 3]
+Vehicles on the bridge(northBound): [Truck 8]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #8 (northbound) EXITING...
+Waiting vehicles(northBound): [Car 7, Car 5, Car 6, Truck 6]
+Waiting vehicles(southBound): [Car 1, Car 4, Truck 3, Car 8, Car 2, Car 9, Car 3]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #3 (southbound) CROSSING...
+Waiting vehicles(northBound): [Car 7, Car 5, Car 6, Truck 6]
+Waiting vehicles(southBound): [Car 1, Car 4, Car 8, Car 2, Car 9, Car 3]
+Vehicles on the bridge(southBound): [Truck 3]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #3 (southbound) EXITING...
+Waiting vehicles(northBound): [Car 7, Car 5, Car 6, Truck 6]
+Waiting vehicles(southBound): [Car 1, Car 4, Car 8, Car 2, Car 9, Car 3]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #6 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 7, Car 5, Car 6]
+Waiting vehicles(southBound): [Car 1, Car 4, Car 8, Car 2, Car 9, Car 3]
+Vehicles on the bridge(northBound): [Truck 6]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #6 (northbound) EXITING...
+Waiting vehicles(northBound): [Car 7, Car 5, Car 6]
+Waiting vehicles(southBound): [Car 1, Car 4, Car 8, Car 2, Car 9, Car 3]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #5 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 7, Car 6]
+Waiting vehicles(southBound): [Car 1, Car 4, Car 8, Car 2, Car 9, Car 3]
+Vehicles on the bridge(northBound): [Car 5]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #6 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 7]
+Waiting vehicles(southBound): [Car 1, Car 4, Car 8, Car 2, Car 9, Car 3]
+Vehicles on the bridge(northBound): [Car 5, Car 6]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #7 (northbound) CROSSING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Car 1, Car 4, Car 8, Car 2, Car 9, Car 3]
+Vehicles on the bridge(northBound): [Car 5, Car 6, Car 7]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #5 (northbound) EXITING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Car 1, Car 4, Car 8, Car 2, Car 9, Car 3]
+Vehicles on the bridge(northBound): [Car 6, Car 7]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #6 (northbound) EXITING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Car 1, Car 4, Car 8, Car 2, Car 9, Car 3]
+Vehicles on the bridge(northBound): [Car 7]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #7 (northbound) EXITING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Car 1, Car 4, Car 8, Car 2, Car 9, Car 3]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #1 (southbound) CROSSING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Car 4, Car 8, Car 2, Car 9, Car 3]
+Vehicles on the bridge(southBound): [Car 1]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #8 (southbound) CROSSING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Car 4, Car 2, Car 9, Car 3]
+Vehicles on the bridge(southBound): [Car 1, Car 8]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #9 (southbound) CROSSING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Car 4, Car 2, Car 3]
+Vehicles on the bridge(southBound): [Car 1, Car 8, Car 9]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #1 (southbound) EXITING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Car 4, Car 2, Car 3]
+Vehicles on the bridge(southBound): [Car 8, Car 9]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #3 (southbound) CROSSING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Car 4, Car 2]
+Vehicles on the bridge(southBound): [Car 8, Car 9, Car 3]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #9 (southbound) EXITING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Car 4, Car 2]
+Vehicles on the bridge(southBound): [Car 8, Car 3]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #2 (southbound) CROSSING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Car 4]
+Vehicles on the bridge(southBound): [Car 8, Car 3, Car 2]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #8 (southbound) EXITING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Car 4]
+Vehicles on the bridge(southBound): [Car 3, Car 2]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #4 (southbound) CROSSING...
+no vehicle waiting on northBound
+no vehicle waiting on southBound
+Vehicles on the bridge(southBound): [Car 3, Car 2, Car 4]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #3 (southbound) EXITING...
+no vehicle waiting on northBound
+no vehicle waiting on southBound
+Vehicles on the bridge(southBound): [Car 2, Car 4]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #2 (southbound) EXITING...
+no vehicle waiting on northBound
+no vehicle waiting on southBound
+Vehicles on the bridge(southBound): [Car 4]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #4 (southbound) EXITING...
+no vehicle waiting on northBound
+no vehicle waiting on southBound
+no vehicle crossing on bridge
+-------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+	4) ./bridge_crossing 4
+
+-------------------------------------------------------------
+Group 1 Truck #1 (southbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #3 (northbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #1 (northbound) arrived.
+-------------------------------------------------------------
+Group 1 Truck #3 (northbound) arrived.
+-------------------------------------------------------------
+Group 1 Truck #2 (northbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #2 (southbound) arrived.
+-------------------------------------------------------------
+Group 1 Truck #4 (northbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #5 (southbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #4 (southbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #6 (northbound) arrived.
+-------------------------------------------------------------
+Group 1 Truck #3 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 3, Car 1, Truck 2, Truck 4, Car 6]
+Waiting vehicles(southBound): [Truck 1, Car 2, Car 5, Car 4]
+Vehicles on the bridge(northBound): [Truck 3]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #3 (northbound) EXITING...
+Waiting vehicles(northBound): [Car 3, Car 1, Truck 2, Truck 4, Car 6]
+Waiting vehicles(southBound): [Truck 1, Car 2, Car 5, Car 4]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #1 (southbound) CROSSING...
+Waiting vehicles(northBound): [Car 3, Car 1, Truck 2, Truck 4, Car 6]
+Waiting vehicles(southBound): [Car 2, Car 5, Car 4]
+Vehicles on the bridge(southBound): [Truck 1]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #1 (southbound) EXITING...
+Waiting vehicles(northBound): [Car 3, Car 1, Truck 2, Truck 4, Car 6]
+Waiting vehicles(southBound): [Car 2, Car 5, Car 4]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #4 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 3, Car 1, Truck 2, Car 6]
+Waiting vehicles(southBound): [Car 2, Car 5, Car 4]
+Vehicles on the bridge(northBound): [Truck 4]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #4 (northbound) EXITING...
+Waiting vehicles(northBound): [Car 3, Car 1, Truck 2, Car 6]
+Waiting vehicles(southBound): [Car 2, Car 5, Car 4]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #2 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 3, Car 1, Car 6]
+Waiting vehicles(southBound): [Car 2, Car 5, Car 4]
+Vehicles on the bridge(northBound): [Truck 2]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #2 (northbound) EXITING...
+Waiting vehicles(northBound): [Car 3, Car 1, Car 6]
+Waiting vehicles(southBound): [Car 2, Car 5, Car 4]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #6 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 3, Car 1]
+Waiting vehicles(southBound): [Car 2, Car 5, Car 4]
+Vehicles on the bridge(northBound): [Car 6]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #3 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 1]
+Waiting vehicles(southBound): [Car 2, Car 5, Car 4]
+Vehicles on the bridge(northBound): [Car 6, Car 3]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #1 (northbound) CROSSING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Car 2, Car 5, Car 4]
+Vehicles on the bridge(northBound): [Car 6, Car 3, Car 1]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #3 (northbound) EXITING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Car 2, Car 5, Car 4]
+Vehicles on the bridge(northBound): [Car 6, Car 1]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #6 (northbound) EXITING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Car 2, Car 5, Car 4]
+Vehicles on the bridge(northBound): [Car 1]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #1 (northbound) EXITING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Car 2, Car 5, Car 4]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #2 (southbound) CROSSING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Car 5, Car 4]
+Vehicles on the bridge(southBound): [Car 2]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #5 (southbound) CROSSING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Car 4]
+Vehicles on the bridge(southBound): [Car 2, Car 5]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #4 (southbound) CROSSING...
+no vehicle waiting on northBound
+no vehicle waiting on southBound
+Vehicles on the bridge(southBound): [Car 2, Car 5, Car 4]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #2 (southbound) EXITING...
+no vehicle waiting on northBound
+no vehicle waiting on southBound
+Vehicles on the bridge(southBound): [Car 5, Car 4]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #5 (southbound) EXITING...
+no vehicle waiting on northBound
+no vehicle waiting on southBound
+Vehicles on the bridge(southBound): [Car 4]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #4 (southbound) EXITING...
+no vehicle waiting on northBound
+no vehicle waiting on southBound
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Truck #5 (northbound) arrived.
+-------------------------------------------------------------
+Group 2 Car #7 (southbound) arrived.
+-------------------------------------------------------------
+Group 2 Truck #6 (southbound) arrived.
+-------------------------------------------------------------
+Group 2 Car #8 (southbound) arrived.
+-------------------------------------------------------------
+Group 2 Car #9 (southbound) arrived.
+-------------------------------------------------------------
+Group 2 Car #10 (southbound) arrived.
+-------------------------------------------------------------
+Group 2 Car #11 (northbound) arrived.
+-------------------------------------------------------------
+Group 2 Truck #7 (southbound) arrived.
+-------------------------------------------------------------
+Group 2 Car #13 (northbound) arrived.
+-------------------------------------------------------------
+Group 2 Car #12 (northbound) arrived.
+-------------------------------------------------------------
+Group 2 Truck #5 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 11, Car 13, Car 12]
+Waiting vehicles(southBound): [Car 7, Truck 6, Car 8, Car 9, Car 10, Truck 7]
+Vehicles on the bridge(northBound): [Truck 5]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Truck #5 (northbound) EXITING...
+Waiting vehicles(northBound): [Car 11, Car 13, Car 12]
+Waiting vehicles(southBound): [Car 7, Truck 6, Car 8, Car 9, Car 10, Truck 7]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Truck #6 (southbound) CROSSING...
+Waiting vehicles(northBound): [Car 11, Car 13, Car 12]
+Waiting vehicles(southBound): [Car 7, Car 8, Car 9, Car 10, Truck 7]
+Vehicles on the bridge(southBound): [Truck 6]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Truck #6 (southbound) EXITING...
+Waiting vehicles(northBound): [Car 11, Car 13, Car 12]
+Waiting vehicles(southBound): [Car 7, Car 8, Car 9, Car 10, Truck 7]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Truck #7 (southbound) CROSSING...
+Waiting vehicles(northBound): [Car 11, Car 13, Car 12]
+Waiting vehicles(southBound): [Car 7, Car 8, Car 9, Car 10]
+Vehicles on the bridge(southBound): [Truck 7]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Truck #7 (southbound) EXITING...
+Waiting vehicles(northBound): [Car 11, Car 13, Car 12]
+Waiting vehicles(southBound): [Car 7, Car 8, Car 9, Car 10]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #10 (southbound) CROSSING...
+Waiting vehicles(northBound): [Car 11, Car 13, Car 12]
+Waiting vehicles(southBound): [Car 7, Car 8, Car 9]
+Vehicles on the bridge(southBound): [Car 10]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #9 (southbound) CROSSING...
+Waiting vehicles(northBound): [Car 11, Car 13, Car 12]
+Waiting vehicles(southBound): [Car 7, Car 8]
+Vehicles on the bridge(southBound): [Car 10, Car 9]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #7 (southbound) CROSSING...
+Waiting vehicles(northBound): [Car 11, Car 13, Car 12]
+Waiting vehicles(southBound): [Car 8]
+Vehicles on the bridge(southBound): [Car 10, Car 9, Car 7]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #7 (southbound) EXITING...
+Waiting vehicles(northBound): [Car 11, Car 13, Car 12]
+Waiting vehicles(southBound): [Car 8]
+Vehicles on the bridge(southBound): [Car 10, Car 9]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #8 (southbound) CROSSING...
+Waiting vehicles(northBound): [Car 11, Car 13, Car 12]
+no vehicle waiting on southBound
+Vehicles on the bridge(southBound): [Car 10, Car 9, Car 8]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #10 (southbound) EXITING...
+Waiting vehicles(northBound): [Car 11, Car 13, Car 12]
+no vehicle waiting on southBound
+Vehicles on the bridge(southBound): [Car 9, Car 8]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #9 (southbound) EXITING...
+Waiting vehicles(northBound): [Car 11, Car 13, Car 12]
+no vehicle waiting on southBound
+Vehicles on the bridge(southBound): [Car 8]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #8 (southbound) EXITING...
+Waiting vehicles(northBound): [Car 11, Car 13, Car 12]
+no vehicle waiting on southBound
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #13 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 11, Car 12]
+no vehicle waiting on southBound
+Vehicles on the bridge(northBound): [Car 13]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #11 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 12]
+no vehicle waiting on southBound
+Vehicles on the bridge(northBound): [Car 13, Car 11]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #12 (northbound) CROSSING...
+no vehicle waiting on northBound
+no vehicle waiting on southBound
+Vehicles on the bridge(northBound): [Car 13, Car 11, Car 12]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #13 (northbound) EXITING...
+no vehicle waiting on northBound
+no vehicle waiting on southBound
+Vehicles on the bridge(northBound): [Car 11, Car 12]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #11 (northbound) EXITING...
+no vehicle waiting on northBound
+no vehicle waiting on southBound
+Vehicles on the bridge(northBound): [Car 12]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #12 (northbound) EXITING...
+no vehicle waiting on northBound
+no vehicle waiting on southBound
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 3 Car #14 (southbound) arrived.
+-------------------------------------------------------------
+Group 3 Car #15 (southbound) arrived.
+-------------------------------------------------------------
+Group 3 Car #16 (northbound) arrived.
+-------------------------------------------------------------
+Group 3 Car #17 (northbound) arrived.
+-------------------------------------------------------------
+Group 3 Truck #8 (southbound) arrived.
+-------------------------------------------------------------
+Group 3 Truck #9 (northbound) arrived.
+-------------------------------------------------------------
+Group 3 Car #18 (northbound) arrived.
+-------------------------------------------------------------
+Group 3 Car #19 (northbound) arrived.
+-------------------------------------------------------------
+Group 3 Car #20 (southbound) arrived.
+-------------------------------------------------------------
+Group 3 Car #21 (northbound) arrived.
+-------------------------------------------------------------
+Group 3 Truck #8 (southbound) CROSSING...
+Waiting vehicles(northBound): [Car 16, Car 17, Truck 9, Car 18, Car 19, Car 21]
+Waiting vehicles(southBound): [Car 14, Car 15, Car 20]
+Vehicles on the bridge(southBound): [Truck 8]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 3 Truck #8 (southbound) EXITING...
+Waiting vehicles(northBound): [Car 16, Car 17, Truck 9, Car 18, Car 19, Car 21]
+Waiting vehicles(southBound): [Car 14, Car 15, Car 20]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 3 Truck #9 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 16, Car 17, Car 18, Car 19, Car 21]
+Waiting vehicles(southBound): [Car 14, Car 15, Car 20]
+Vehicles on the bridge(northBound): [Truck 9]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 3 Truck #9 (northbound) EXITING...
+Waiting vehicles(northBound): [Car 16, Car 17, Car 18, Car 19, Car 21]
+Waiting vehicles(southBound): [Car 14, Car 15, Car 20]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 3 Car #18 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 16, Car 17, Car 19, Car 21]
+Waiting vehicles(southBound): [Car 14, Car 15, Car 20]
+Vehicles on the bridge(northBound): [Car 18]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 3 Car #21 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 16, Car 17, Car 19]
+Waiting vehicles(southBound): [Car 14, Car 15, Car 20]
+Vehicles on the bridge(northBound): [Car 18, Car 21]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 3 Car #17 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 16, Car 19]
+Waiting vehicles(southBound): [Car 14, Car 15, Car 20]
+Vehicles on the bridge(northBound): [Car 18, Car 21, Car 17]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 3 Car #18 (northbound) EXITING...
+Waiting vehicles(northBound): [Car 16, Car 19]
+Waiting vehicles(southBound): [Car 14, Car 15, Car 20]
+Vehicles on the bridge(northBound): [Car 21, Car 17]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 3 Car #17 (northbound) EXITING...
+Waiting vehicles(northBound): [Car 16, Car 19]
+Waiting vehicles(southBound): [Car 14, Car 15, Car 20]
+Vehicles on the bridge(northBound): [Car 21]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 3 Car #21 (northbound) EXITING...
+Waiting vehicles(northBound): [Car 16, Car 19]
+Waiting vehicles(southBound): [Car 14, Car 15, Car 20]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 3 Car #16 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 19]
+Waiting vehicles(southBound): [Car 14, Car 15, Car 20]
+Vehicles on the bridge(northBound): [Car 16]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 3 Car #19 (northbound) CROSSING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Car 14, Car 15, Car 20]
+Vehicles on the bridge(northBound): [Car 16, Car 19]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 3 Car #19 (northbound) EXITING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Car 14, Car 15, Car 20]
+Vehicles on the bridge(northBound): [Car 16]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 3 Car #16 (northbound) EXITING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Car 14, Car 15, Car 20]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 3 Car #15 (southbound) CROSSING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Car 14, Car 20]
+Vehicles on the bridge(southBound): [Car 15]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 3 Car #14 (southbound) CROSSING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Car 20]
+Vehicles on the bridge(southBound): [Car 15, Car 14]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 3 Car #20 (southbound) CROSSING...
+no vehicle waiting on northBound
+no vehicle waiting on southBound
+Vehicles on the bridge(southBound): [Car 15, Car 14, Car 20]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 3 Car #15 (southbound) EXITING...
+no vehicle waiting on northBound
+no vehicle waiting on southBound
+Vehicles on the bridge(southBound): [Car 14, Car 20]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 3 Car #14 (southbound) EXITING...
+no vehicle waiting on northBound
+no vehicle waiting on southBound
+Vehicles on the bridge(southBound): [Car 20]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 3 Car #20 (southbound) EXITING...
+no vehicle waiting on northBound
+no vehicle waiting on southBound
+no vehicle crossing on bridge
+-------------------------------------------------------------
+
+
+
+
+
+
+
+
+	5) ./bridge_crossing 5
+
+-------------------------------------------------------------
+Group 1 Car #1 (northbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #7 (northbound) arrived.
+-------------------------------------------------------------
+Group 1 Truck #1 (northbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #9 (southbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #4 (southbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #5 (northbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #6 (northbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #2 (northbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #8 (northbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #3 (northbound) arrived.
+-------------------------------------------------------------
+Group 1 Truck #1 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 1, Car 7, Car 5, Car 6, Car 2, Car 8, Car 3]
+Waiting vehicles(southBound): [Car 9, Car 4]
+Vehicles on the bridge(northBound): [Truck 1]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #1 (northbound) EXITING...
+Waiting vehicles(northBound): [Car 1, Car 7, Car 5, Car 6, Car 2, Car 8, Car 3]
+Waiting vehicles(southBound): [Car 9, Car 4]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #3 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 1, Car 7, Car 5, Car 6, Car 2, Car 8]
+Waiting vehicles(southBound): [Car 9, Car 4]
+Vehicles on the bridge(northBound): [Car 3]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #1 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 7, Car 5, Car 6, Car 2, Car 8]
+Waiting vehicles(southBound): [Car 9, Car 4]
+Vehicles on the bridge(northBound): [Car 3, Car 1]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #7 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 5, Car 6, Car 2, Car 8]
+Waiting vehicles(southBound): [Car 9, Car 4]
+Vehicles on the bridge(northBound): [Car 3, Car 1, Car 7]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #10 (southbound) arrived.
+-------------------------------------------------------------
+Group 2 Car #12 (southbound) arrived.
+-------------------------------------------------------------
+Group 2 Car #11 (southbound) arrived.
+-------------------------------------------------------------
+Group 2 Car #13 (northbound) arrived.
+-------------------------------------------------------------
+Group 2 Car #14 (southbound) arrived.
+-------------------------------------------------------------
+Group 2 Car #15 (southbound) arrived.
+-------------------------------------------------------------
+Group 2 Car #16 (southbound) arrived.
+-------------------------------------------------------------
+Group 2 Truck #2 (northbound) arrived.
+-------------------------------------------------------------
+Group 2 Car #17 (northbound) arrived.
+-------------------------------------------------------------
+Group 2 Truck #3 (southbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #7 (northbound) EXITING...
+Waiting vehicles(northBound): [Car 5, Car 6, Car 2, Car 8, Car 13, Truck 2, Car 17]
+Waiting vehicles(southBound): [Car 9, Car 4, Car 12, Car 10, Car 11, Car 14, Car 15, Car 16, Truck 3]
+Vehicles on the bridge(northBound): [Car 3, Car 1]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #1 (northbound) EXITING...
+Waiting vehicles(northBound): [Car 5, Car 6, Car 2, Car 8, Car 13, Truck 2, Car 17]
+Waiting vehicles(southBound): [Car 9, Car 4, Car 12, Car 10, Car 11, Car 14, Car 15, Car 16, Truck 3]
+Vehicles on the bridge(northBound): [Car 3]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #3 (northbound) EXITING...
+Waiting vehicles(northBound): [Car 5, Car 6, Car 2, Car 8, Car 13, Truck 2, Car 17]
+Waiting vehicles(southBound): [Car 9, Car 4, Car 12, Car 10, Car 11, Car 14, Car 15, Car 16, Truck 3]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Truck #2 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 5, Car 6, Car 2, Car 8, Car 13, Car 17]
+Waiting vehicles(southBound): [Car 9, Car 4, Car 12, Car 10, Car 11, Car 14, Car 15, Car 16, Truck 3]
+Vehicles on the bridge(northBound): [Truck 2]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Truck #2 (northbound) EXITING...
+Waiting vehicles(northBound): [Car 5, Car 6, Car 2, Car 8, Car 13, Car 17]
+Waiting vehicles(southBound): [Car 9, Car 4, Car 12, Car 10, Car 11, Car 14, Car 15, Car 16, Truck 3]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Truck #3 (southbound) CROSSING...
+Waiting vehicles(northBound): [Car 5, Car 6, Car 2, Car 8, Car 13, Car 17]
+Waiting vehicles(southBound): [Car 9, Car 4, Car 12, Car 10, Car 11, Car 14, Car 15, Car 16]
+Vehicles on the bridge(southBound): [Truck 3]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Truck #3 (southbound) EXITING...
+Waiting vehicles(northBound): [Car 5, Car 6, Car 2, Car 8, Car 13, Car 17]
+Waiting vehicles(southBound): [Car 9, Car 4, Car 12, Car 10, Car 11, Car 14, Car 15, Car 16]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #12 (southbound) CROSSING...
+Waiting vehicles(northBound): [Car 5, Car 6, Car 2, Car 8, Car 13, Car 17]
+Waiting vehicles(southBound): [Car 9, Car 4, Car 10, Car 11, Car 14, Car 15, Car 16]
+Vehicles on the bridge(southBound): [Car 12]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #15 (southbound) CROSSING...
+Waiting vehicles(northBound): [Car 5, Car 6, Car 2, Car 8, Car 13, Car 17]
+Waiting vehicles(southBound): [Car 9, Car 4, Car 10, Car 11, Car 14, Car 16]
+Vehicles on the bridge(southBound): [Car 12, Car 15]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #9 (southbound) CROSSING...
+Waiting vehicles(northBound): [Car 5, Car 6, Car 2, Car 8, Car 13, Car 17]
+Waiting vehicles(southBound): [Car 4, Car 10, Car 11, Car 14, Car 16]
+Vehicles on the bridge(southBound): [Car 12, Car 15, Car 9]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #12 (southbound) EXITING...
+Waiting vehicles(northBound): [Car 5, Car 6, Car 2, Car 8, Car 13, Car 17]
+Waiting vehicles(southBound): [Car 4, Car 10, Car 11, Car 14, Car 16]
+Vehicles on the bridge(southBound): [Car 15, Car 9]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #14 (southbound) CROSSING...
+Waiting vehicles(northBound): [Car 5, Car 6, Car 2, Car 8, Car 13, Car 17]
+Waiting vehicles(southBound): [Car 4, Car 10, Car 11, Car 16]
+Vehicles on the bridge(southBound): [Car 15, Car 9, Car 14]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #15 (southbound) EXITING...
+Waiting vehicles(northBound): [Car 5, Car 6, Car 2, Car 8, Car 13, Car 17]
+Waiting vehicles(southBound): [Car 4, Car 10, Car 11, Car 16]
+Vehicles on the bridge(southBound): [Car 9, Car 14]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #9 (southbound) EXITING...
+Waiting vehicles(northBound): [Car 5, Car 6, Car 2, Car 8, Car 13, Car 17]
+Waiting vehicles(southBound): [Car 4, Car 10, Car 11, Car 16]
+Vehicles on the bridge(southBound): [Car 14]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #16 (southbound) CROSSING...
+Waiting vehicles(northBound): [Car 5, Car 6, Car 2, Car 8, Car 13, Car 17]
+Waiting vehicles(southBound): [Car 4, Car 10, Car 11]
+Vehicles on the bridge(southBound): [Car 14, Car 16]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #11 (southbound) CROSSING...
+Waiting vehicles(northBound): [Car 5, Car 6, Car 2, Car 8, Car 13, Car 17]
+Waiting vehicles(southBound): [Car 4, Car 10]
+Vehicles on the bridge(southBound): [Car 14, Car 16, Car 11]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #14 (southbound) EXITING...
+Waiting vehicles(northBound): [Car 5, Car 6, Car 2, Car 8, Car 13, Car 17]
+Waiting vehicles(southBound): [Car 4, Car 10]
+Vehicles on the bridge(southBound): [Car 16, Car 11]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #4 (southbound) CROSSING...
+Waiting vehicles(northBound): [Car 5, Car 6, Car 2, Car 8, Car 13, Car 17]
+Waiting vehicles(southBound): [Car 10]
+Vehicles on the bridge(southBound): [Car 16, Car 11, Car 4]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #16 (southbound) EXITING...
+Waiting vehicles(northBound): [Car 5, Car 6, Car 2, Car 8, Car 13, Car 17]
+Waiting vehicles(southBound): [Car 10]
+Vehicles on the bridge(southBound): [Car 11, Car 4]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #11 (southbound) EXITING...
+Waiting vehicles(northBound): [Car 5, Car 6, Car 2, Car 8, Car 13, Car 17]
+Waiting vehicles(southBound): [Car 10]
+Vehicles on the bridge(southBound): [Car 4]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #10 (southbound) CROSSING...
+Waiting vehicles(northBound): [Car 5, Car 6, Car 2, Car 8, Car 13, Car 17]
+no vehicle waiting on southBound
+Vehicles on the bridge(southBound): [Car 4, Car 10]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 3 Car #18 (northbound) arrived.
+-------------------------------------------------------------
+Group 3 Car #19 (southbound) arrived.
+-------------------------------------------------------------
+Group 3 Car #20 (northbound) arrived.
+-------------------------------------------------------------
+Group 3 Truck #4 (southbound) arrived.
+-------------------------------------------------------------
+Group 3 Truck #5 (southbound) arrived.
+-------------------------------------------------------------
+Group 3 Car #22 (southbound) arrived.
+-------------------------------------------------------------
+Group 3 Truck #6 (southbound) arrived.
+-------------------------------------------------------------
+Group 3 Car #23 (northbound) arrived.
+-------------------------------------------------------------
+Group 3 Car #21 (northbound) arrived.
+-------------------------------------------------------------
+Group 3 Car #24 (northbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #4 (southbound) EXITING...
+Waiting vehicles(northBound): [Car 5, Car 6, Car 2, Car 8, Car 13, Car 17, Car 18, Car 20, Car 23, Car 21, Car 24]
+Waiting vehicles(southBound): [Car 19, Truck 4, Truck 5, Car 22, Truck 6]
+Vehicles on the bridge(southBound): [Car 10]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #10 (southbound) EXITING...
+Waiting vehicles(northBound): [Car 5, Car 6, Car 2, Car 8, Car 13, Car 17, Car 18, Car 20, Car 23, Car 21, Car 24]
+Waiting vehicles(southBound): [Car 19, Truck 4, Truck 5, Car 22, Truck 6]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 3 Truck #5 (southbound) CROSSING...
+Waiting vehicles(northBound): [Car 5, Car 6, Car 2, Car 8, Car 13, Car 17, Car 18, Car 20, Car 23, Car 21, Car 24]
+Waiting vehicles(southBound): [Car 19, Truck 4, Car 22, Truck 6]
+Vehicles on the bridge(southBound): [Truck 5]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 3 Truck #5 (southbound) EXITING...
+Waiting vehicles(northBound): [Car 5, Car 6, Car 2, Car 8, Car 13, Car 17, Car 18, Car 20, Car 23, Car 21, Car 24]
+Waiting vehicles(southBound): [Car 19, Truck 4, Car 22, Truck 6]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 3 Truck #6 (southbound) CROSSING...
+Waiting vehicles(northBound): [Car 5, Car 6, Car 2, Car 8, Car 13, Car 17, Car 18, Car 20, Car 23, Car 21, Car 24]
+Waiting vehicles(southBound): [Car 19, Truck 4, Car 22]
+Vehicles on the bridge(southBound): [Truck 6]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 3 Truck #6 (southbound) EXITING...
+Waiting vehicles(northBound): [Car 5, Car 6, Car 2, Car 8, Car 13, Car 17, Car 18, Car 20, Car 23, Car 21, Car 24]
+Waiting vehicles(southBound): [Car 19, Truck 4, Car 22]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 3 Truck #4 (southbound) CROSSING...
+Waiting vehicles(northBound): [Car 5, Car 6, Car 2, Car 8, Car 13, Car 17, Car 18, Car 20, Car 23, Car 21, Car 24]
+Waiting vehicles(southBound): [Car 19, Car 22]
+Vehicles on the bridge(southBound): [Truck 4]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 3 Truck #4 (southbound) EXITING...
+Waiting vehicles(northBound): [Car 5, Car 6, Car 2, Car 8, Car 13, Car 17, Car 18, Car 20, Car 23, Car 21, Car 24]
+Waiting vehicles(southBound): [Car 19, Car 22]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 3 Car #19 (southbound) CROSSING...
+Waiting vehicles(northBound): [Car 5, Car 6, Car 2, Car 8, Car 13, Car 17, Car 18, Car 20, Car 23, Car 21, Car 24]
+Waiting vehicles(southBound): [Car 22]
+Vehicles on the bridge(southBound): [Car 19]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 3 Car #22 (southbound) CROSSING...
+Waiting vehicles(northBound): [Car 5, Car 6, Car 2, Car 8, Car 13, Car 17, Car 18, Car 20, Car 23, Car 21, Car 24]
+no vehicle waiting on southBound
+Vehicles on the bridge(southBound): [Car 19, Car 22]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 3 Car #19 (southbound) EXITING...
+Waiting vehicles(northBound): [Car 5, Car 6, Car 2, Car 8, Car 13, Car 17, Car 18, Car 20, Car 23, Car 21, Car 24]
+no vehicle waiting on southBound
+Vehicles on the bridge(southBound): [Car 22]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 3 Car #22 (southbound) EXITING...
+Waiting vehicles(northBound): [Car 5, Car 6, Car 2, Car 8, Car 13, Car 17, Car 18, Car 20, Car 23, Car 21, Car 24]
+no vehicle waiting on southBound
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #5 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 6, Car 2, Car 8, Car 13, Car 17, Car 18, Car 20, Car 23, Car 21, Car 24]
+no vehicle waiting on southBound
+Vehicles on the bridge(northBound): [Car 5]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 3 Car #18 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 6, Car 2, Car 8, Car 13, Car 17, Car 20, Car 23, Car 21, Car 24]
+no vehicle waiting on southBound
+Vehicles on the bridge(northBound): [Car 5, Car 18]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 3 Car #23 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 6, Car 2, Car 8, Car 13, Car 17, Car 20, Car 21, Car 24]
+no vehicle waiting on southBound
+Vehicles on the bridge(northBound): [Car 5, Car 18, Car 23]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #5 (northbound) EXITING...
+Waiting vehicles(northBound): [Car 6, Car 2, Car 8, Car 13, Car 17, Car 20, Car 21, Car 24]
+no vehicle waiting on southBound
+Vehicles on the bridge(northBound): [Car 18, Car 23]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 3 Car #23 (northbound) EXITING...
+Waiting vehicles(northBound): [Car 6, Car 2, Car 8, Car 13, Car 17, Car 20, Car 21, Car 24]
+no vehicle waiting on southBound
+Vehicles on the bridge(northBound): [Car 18]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 3 Car #18 (northbound) EXITING...
+Waiting vehicles(northBound): [Car 6, Car 2, Car 8, Car 13, Car 17, Car 20, Car 21, Car 24]
+no vehicle waiting on southBound
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 3 Car #24 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 6, Car 2, Car 8, Car 13, Car 17, Car 20, Car 21]
+no vehicle waiting on southBound
+Vehicles on the bridge(northBound): [Car 24]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #13 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 6, Car 2, Car 8, Car 17, Car 20, Car 21]
+no vehicle waiting on southBound
+Vehicles on the bridge(northBound): [Car 24, Car 13]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 3 Car #21 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 6, Car 2, Car 8, Car 17, Car 20]
+no vehicle waiting on southBound
+Vehicles on the bridge(northBound): [Car 24, Car 13, Car 21]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #13 (northbound) EXITING...
+Waiting vehicles(northBound): [Car 6, Car 2, Car 8, Car 17, Car 20]
+no vehicle waiting on southBound
+Vehicles on the bridge(northBound): [Car 24, Car 21]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 3 Car #24 (northbound) EXITING...
+Waiting vehicles(northBound): [Car 6, Car 2, Car 8, Car 17, Car 20]
+no vehicle waiting on southBound
+Vehicles on the bridge(northBound): [Car 21]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 3 Car #21 (northbound) EXITING...
+Waiting vehicles(northBound): [Car 6, Car 2, Car 8, Car 17, Car 20]
+no vehicle waiting on southBound
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #6 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 2, Car 8, Car 17, Car 20]
+no vehicle waiting on southBound
+Vehicles on the bridge(northBound): [Car 6]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #17 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 2, Car 8, Car 20]
+no vehicle waiting on southBound
+Vehicles on the bridge(northBound): [Car 6, Car 17]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #8 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 2, Car 20]
+no vehicle waiting on southBound
+Vehicles on the bridge(northBound): [Car 6, Car 17, Car 8]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #6 (northbound) EXITING...
+Waiting vehicles(northBound): [Car 2, Car 20]
+no vehicle waiting on southBound
+Vehicles on the bridge(northBound): [Car 17, Car 8]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 3 Car #20 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 2]
+no vehicle waiting on southBound
+Vehicles on the bridge(northBound): [Car 17, Car 8, Car 20]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #8 (northbound) EXITING...
+Waiting vehicles(northBound): [Car 2]
+no vehicle waiting on southBound
+Vehicles on the bridge(northBound): [Car 17, Car 20]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #2 (northbound) CROSSING...
+no vehicle waiting on northBound
+no vehicle waiting on southBound
+Vehicles on the bridge(northBound): [Car 17, Car 20, Car 2]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #17 (northbound) EXITING...
+no vehicle waiting on northBound
+no vehicle waiting on southBound
+Vehicles on the bridge(northBound): [Car 20, Car 2]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 3 Car #20 (northbound) EXITING...
+no vehicle waiting on northBound
+no vehicle waiting on southBound
+Vehicles on the bridge(northBound): [Car 2]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #2 (northbound) EXITING...
+no vehicle waiting on northBound
+no vehicle waiting on southBound
+no vehicle crossing on bridge
+-------------------------------------------------------------
+
+
+
+
+
+
+
+
+	6) ./bridge_crossing 6
+
+-------------------------------------------------------------
+Group 1 Truck #1 (southbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #2 (northbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #1 (northbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #3 (southbound) arrived.
+-------------------------------------------------------------
+Group 1 Truck #2 (northbound) arrived.
+-------------------------------------------------------------
+Group 1 Truck #3 (southbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #7 (southbound) arrived.
+-------------------------------------------------------------
+Group 1 Truck #4 (southbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #5 (northbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #6 (southbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #4 (northbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #8 (northbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #9 (northbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #10 (southbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #11 (northbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #12 (southbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #13 (southbound) arrived.
+-------------------------------------------------------------
+Group 1 Truck #5 (northbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #14 (southbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #15 (southbound) arrived.
+-------------------------------------------------------------
+Group 1 Truck #2 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 2, Car 1, Car 5, Car 4, Car 8, Car 9, Car 11, Truck 5]
+Waiting vehicles(southBound): [Truck 1, Car 3, Truck 3, Car 7, Truck 4, Car 6, Car 10, Car 12, Car 13, Car 14, Car 15]
+Vehicles on the bridge(northBound): [Truck 2]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #2 (northbound) EXITING...
+Waiting vehicles(northBound): [Car 2, Car 1, Car 5, Car 4, Car 8, Car 9, Car 11, Truck 5]
+Waiting vehicles(southBound): [Truck 1, Car 3, Truck 3, Car 7, Truck 4, Car 6, Car 10, Car 12, Car 13, Car 14, Car 15]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #1 (southbound) CROSSING...
+Waiting vehicles(northBound): [Car 2, Car 1, Car 5, Car 4, Car 8, Car 9, Car 11, Truck 5]
+Waiting vehicles(southBound): [Car 3, Truck 3, Car 7, Truck 4, Car 6, Car 10, Car 12, Car 13, Car 14, Car 15]
+Vehicles on the bridge(southBound): [Truck 1]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #1 (southbound) EXITING...
+Waiting vehicles(northBound): [Car 2, Car 1, Car 5, Car 4, Car 8, Car 9, Car 11, Truck 5]
+Waiting vehicles(southBound): [Car 3, Truck 3, Car 7, Truck 4, Car 6, Car 10, Car 12, Car 13, Car 14, Car 15]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #5 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 2, Car 1, Car 5, Car 4, Car 8, Car 9, Car 11]
+Waiting vehicles(southBound): [Car 3, Truck 3, Car 7, Truck 4, Car 6, Car 10, Car 12, Car 13, Car 14, Car 15]
+Vehicles on the bridge(northBound): [Truck 5]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #5 (northbound) EXITING...
+Waiting vehicles(northBound): [Car 2, Car 1, Car 5, Car 4, Car 8, Car 9, Car 11]
+Waiting vehicles(southBound): [Car 3, Truck 3, Car 7, Truck 4, Car 6, Car 10, Car 12, Car 13, Car 14, Car 15]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #4 (southbound) CROSSING...
+Waiting vehicles(northBound): [Car 2, Car 1, Car 5, Car 4, Car 8, Car 9, Car 11]
+Waiting vehicles(southBound): [Car 3, Truck 3, Car 7, Car 6, Car 10, Car 12, Car 13, Car 14, Car 15]
+Vehicles on the bridge(southBound): [Truck 4]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #4 (southbound) EXITING...
+Waiting vehicles(northBound): [Car 2, Car 1, Car 5, Car 4, Car 8, Car 9, Car 11]
+Waiting vehicles(southBound): [Car 3, Truck 3, Car 7, Car 6, Car 10, Car 12, Car 13, Car 14, Car 15]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #3 (southbound) CROSSING...
+Waiting vehicles(northBound): [Car 2, Car 1, Car 5, Car 4, Car 8, Car 9, Car 11]
+Waiting vehicles(southBound): [Car 3, Car 7, Car 6, Car 10, Car 12, Car 13, Car 14, Car 15]
+Vehicles on the bridge(southBound): [Truck 3]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Truck #3 (southbound) EXITING...
+Waiting vehicles(northBound): [Car 2, Car 1, Car 5, Car 4, Car 8, Car 9, Car 11]
+Waiting vehicles(southBound): [Car 3, Car 7, Car 6, Car 10, Car 12, Car 13, Car 14, Car 15]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #12 (southbound) CROSSING...
+Waiting vehicles(northBound): [Car 2, Car 1, Car 5, Car 4, Car 8, Car 9, Car 11]
+Waiting vehicles(southBound): [Car 3, Car 7, Car 6, Car 10, Car 13, Car 14, Car 15]
+Vehicles on the bridge(southBound): [Car 12]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #6 (southbound) CROSSING...
+Waiting vehicles(northBound): [Car 2, Car 1, Car 5, Car 4, Car 8, Car 9, Car 11]
+Waiting vehicles(southBound): [Car 3, Car 7, Car 10, Car 13, Car 14, Car 15]
+Vehicles on the bridge(southBound): [Car 12, Car 6]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #3 (southbound) CROSSING...
+Waiting vehicles(northBound): [Car 2, Car 1, Car 5, Car 4, Car 8, Car 9, Car 11]
+Waiting vehicles(southBound): [Car 7, Car 10, Car 13, Car 14, Car 15]
+Vehicles on the bridge(southBound): [Car 12, Car 6, Car 3]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #12 (southbound) EXITING...
+Waiting vehicles(northBound): [Car 2, Car 1, Car 5, Car 4, Car 8, Car 9, Car 11]
+Waiting vehicles(southBound): [Car 7, Car 10, Car 13, Car 14, Car 15]
+Vehicles on the bridge(southBound): [Car 6, Car 3]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #14 (southbound) CROSSING...
+Waiting vehicles(northBound): [Car 2, Car 1, Car 5, Car 4, Car 8, Car 9, Car 11]
+Waiting vehicles(southBound): [Car 7, Car 10, Car 13, Car 15]
+Vehicles on the bridge(southBound): [Car 6, Car 3, Car 14]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #6 (southbound) EXITING...
+Waiting vehicles(northBound): [Car 2, Car 1, Car 5, Car 4, Car 8, Car 9, Car 11]
+Waiting vehicles(southBound): [Car 7, Car 10, Car 13, Car 15]
+Vehicles on the bridge(southBound): [Car 3, Car 14]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #7 (southbound) CROSSING...
+Waiting vehicles(northBound): [Car 2, Car 1, Car 5, Car 4, Car 8, Car 9, Car 11]
+Waiting vehicles(southBound): [Car 10, Car 13, Car 15]
+Vehicles on the bridge(southBound): [Car 3, Car 14, Car 7]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #3 (southbound) EXITING...
+Waiting vehicles(northBound): [Car 2, Car 1, Car 5, Car 4, Car 8, Car 9, Car 11]
+Waiting vehicles(southBound): [Car 10, Car 13, Car 15]
+Vehicles on the bridge(southBound): [Car 14, Car 7]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #10 (southbound) CROSSING...
+Waiting vehicles(northBound): [Car 2, Car 1, Car 5, Car 4, Car 8, Car 9, Car 11]
+Waiting vehicles(southBound): [Car 13, Car 15]
+Vehicles on the bridge(southBound): [Car 14, Car 7, Car 10]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #14 (southbound) EXITING...
+Waiting vehicles(northBound): [Car 2, Car 1, Car 5, Car 4, Car 8, Car 9, Car 11]
+Waiting vehicles(southBound): [Car 13, Car 15]
+Vehicles on the bridge(southBound): [Car 7, Car 10]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #7 (southbound) EXITING...
+Waiting vehicles(northBound): [Car 2, Car 1, Car 5, Car 4, Car 8, Car 9, Car 11]
+Waiting vehicles(southBound): [Car 13, Car 15]
+Vehicles on the bridge(southBound): [Car 10]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #10 (southbound) EXITING...
+Waiting vehicles(northBound): [Car 2, Car 1, Car 5, Car 4, Car 8, Car 9, Car 11]
+Waiting vehicles(southBound): [Car 13, Car 15]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #15 (southbound) CROSSING...
+Waiting vehicles(northBound): [Car 2, Car 1, Car 5, Car 4, Car 8, Car 9, Car 11]
+Waiting vehicles(southBound): [Car 13]
+Vehicles on the bridge(southBound): [Car 15]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #13 (southbound) CROSSING...
+Waiting vehicles(northBound): [Car 2, Car 1, Car 5, Car 4, Car 8, Car 9, Car 11]
+no vehicle waiting on southBound
+Vehicles on the bridge(southBound): [Car 15, Car 13]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #16 (northbound) arrived.
+-------------------------------------------------------------
+Group 2 Truck #6 (southbound) arrived.
+-------------------------------------------------------------
+Group 2 Truck #7 (northbound) arrived.
+-------------------------------------------------------------
+Group 2 Truck #8 (northbound) arrived.
+-------------------------------------------------------------
+Group 2 Car #17 (northbound) arrived.
+-------------------------------------------------------------
+Group 2 Car #18 (southbound) arrived.
+-------------------------------------------------------------
+Group 2 Car #19 (northbound) arrived.
+-------------------------------------------------------------
+Group 2 Truck #9 (southbound) arrived.
+-------------------------------------------------------------
+Group 2 Car #20 (northbound) arrived.
+-------------------------------------------------------------
+Group 2 Car #21 (northbound) arrived.
+-------------------------------------------------------------
+Group 1 Car #15 (southbound) EXITING...
+Waiting vehicles(northBound): [Car 2, Car 1, Car 5, Car 4, Car 8, Car 9, Car 11, Car 16, Truck 7, Truck 8, Car 17, Car 19, Car 20, Car 21]
+Waiting vehicles(southBound): [Truck 6, Car 18, Truck 9]
+Vehicles on the bridge(southBound): [Car 13]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #13 (southbound) EXITING...
+Waiting vehicles(northBound): [Car 2, Car 1, Car 5, Car 4, Car 8, Car 9, Car 11, Car 16, Truck 7, Truck 8, Car 17, Car 19, Car 20, Car 21]
+Waiting vehicles(southBound): [Truck 6, Car 18, Truck 9]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Truck #9 (southbound) CROSSING...
+Waiting vehicles(northBound): [Car 2, Car 1, Car 5, Car 4, Car 8, Car 9, Car 11, Car 16, Truck 7, Truck 8, Car 17, Car 19, Car 20, Car 21]
+Waiting vehicles(southBound): [Truck 6, Car 18]
+Vehicles on the bridge(southBound): [Truck 9]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Truck #9 (southbound) EXITING...
+Waiting vehicles(northBound): [Car 2, Car 1, Car 5, Car 4, Car 8, Car 9, Car 11, Car 16, Truck 7, Truck 8, Car 17, Car 19, Car 20, Car 21]
+Waiting vehicles(southBound): [Truck 6, Car 18]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Truck #7 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 2, Car 1, Car 5, Car 4, Car 8, Car 9, Car 11, Car 16, Truck 8, Car 17, Car 19, Car 20, Car 21]
+Waiting vehicles(southBound): [Truck 6, Car 18]
+Vehicles on the bridge(northBound): [Truck 7]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Truck #7 (northbound) EXITING...
+Waiting vehicles(northBound): [Car 2, Car 1, Car 5, Car 4, Car 8, Car 9, Car 11, Car 16, Truck 8, Car 17, Car 19, Car 20, Car 21]
+Waiting vehicles(southBound): [Truck 6, Car 18]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Truck #6 (southbound) CROSSING...
+Waiting vehicles(northBound): [Car 2, Car 1, Car 5, Car 4, Car 8, Car 9, Car 11, Car 16, Truck 8, Car 17, Car 19, Car 20, Car 21]
+Waiting vehicles(southBound): [Car 18]
+Vehicles on the bridge(southBound): [Truck 6]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Truck #6 (southbound) EXITING...
+Waiting vehicles(northBound): [Car 2, Car 1, Car 5, Car 4, Car 8, Car 9, Car 11, Car 16, Truck 8, Car 17, Car 19, Car 20, Car 21]
+Waiting vehicles(southBound): [Car 18]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Truck #8 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 2, Car 1, Car 5, Car 4, Car 8, Car 9, Car 11, Car 16, Car 17, Car 19, Car 20, Car 21]
+Waiting vehicles(southBound): [Car 18]
+Vehicles on the bridge(northBound): [Truck 8]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Truck #8 (northbound) EXITING...
+Waiting vehicles(northBound): [Car 2, Car 1, Car 5, Car 4, Car 8, Car 9, Car 11, Car 16, Car 17, Car 19, Car 20, Car 21]
+Waiting vehicles(southBound): [Car 18]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #16 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 2, Car 1, Car 5, Car 4, Car 8, Car 9, Car 11, Car 17, Car 19, Car 20, Car 21]
+Waiting vehicles(southBound): [Car 18]
+Vehicles on the bridge(northBound): [Car 16]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #8 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 2, Car 1, Car 5, Car 4, Car 9, Car 11, Car 17, Car 19, Car 20, Car 21]
+Waiting vehicles(southBound): [Car 18]
+Vehicles on the bridge(northBound): [Car 16, Car 8]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #4 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 2, Car 1, Car 5, Car 9, Car 11, Car 17, Car 19, Car 20, Car 21]
+Waiting vehicles(southBound): [Car 18]
+Vehicles on the bridge(northBound): [Car 16, Car 8, Car 4]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #4 (northbound) EXITING...
+Waiting vehicles(northBound): [Car 2, Car 1, Car 5, Car 9, Car 11, Car 17, Car 19, Car 20, Car 21]
+Waiting vehicles(southBound): [Car 18]
+Vehicles on the bridge(northBound): [Car 16, Car 8]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #8 (northbound) EXITING...
+Waiting vehicles(northBound): [Car 2, Car 1, Car 5, Car 9, Car 11, Car 17, Car 19, Car 20, Car 21]
+Waiting vehicles(southBound): [Car 18]
+Vehicles on the bridge(northBound): [Car 16]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #5 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 2, Car 1, Car 9, Car 11, Car 17, Car 19, Car 20, Car 21]
+Waiting vehicles(southBound): [Car 18]
+Vehicles on the bridge(northBound): [Car 16, Car 5]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #16 (northbound) EXITING...
+Waiting vehicles(northBound): [Car 2, Car 1, Car 9, Car 11, Car 17, Car 19, Car 20, Car 21]
+Waiting vehicles(southBound): [Car 18]
+Vehicles on the bridge(northBound): [Car 5]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #1 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 2, Car 9, Car 11, Car 17, Car 19, Car 20, Car 21]
+Waiting vehicles(southBound): [Car 18]
+Vehicles on the bridge(northBound): [Car 5, Car 1]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #20 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 2, Car 9, Car 11, Car 17, Car 19, Car 21]
+Waiting vehicles(southBound): [Car 18]
+Vehicles on the bridge(northBound): [Car 5, Car 1, Car 20]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #1 (northbound) EXITING...
+Waiting vehicles(northBound): [Car 2, Car 9, Car 11, Car 17, Car 19, Car 21]
+Waiting vehicles(southBound): [Car 18]
+Vehicles on the bridge(northBound): [Car 5, Car 20]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #5 (northbound) EXITING...
+Waiting vehicles(northBound): [Car 2, Car 9, Car 11, Car 17, Car 19, Car 21]
+Waiting vehicles(southBound): [Car 18]
+Vehicles on the bridge(northBound): [Car 20]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #19 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 2, Car 9, Car 11, Car 17, Car 21]
+Waiting vehicles(southBound): [Car 18]
+Vehicles on the bridge(northBound): [Car 20, Car 19]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #2 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 9, Car 11, Car 17, Car 21]
+Waiting vehicles(southBound): [Car 18]
+Vehicles on the bridge(northBound): [Car 20, Car 19, Car 2]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #20 (northbound) EXITING...
+Waiting vehicles(northBound): [Car 9, Car 11, Car 17, Car 21]
+Waiting vehicles(southBound): [Car 18]
+Vehicles on the bridge(northBound): [Car 19, Car 2]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #17 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 9, Car 11, Car 21]
+Waiting vehicles(southBound): [Car 18]
+Vehicles on the bridge(northBound): [Car 19, Car 2, Car 17]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #19 (northbound) EXITING...
+Waiting vehicles(northBound): [Car 9, Car 11, Car 21]
+Waiting vehicles(southBound): [Car 18]
+Vehicles on the bridge(northBound): [Car 2, Car 17]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #11 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 9, Car 21]
+Waiting vehicles(southBound): [Car 18]
+Vehicles on the bridge(northBound): [Car 2, Car 17, Car 11]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #2 (northbound) EXITING...
+Waiting vehicles(northBound): [Car 9, Car 21]
+Waiting vehicles(southBound): [Car 18]
+Vehicles on the bridge(northBound): [Car 17, Car 11]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #9 (northbound) CROSSING...
+Waiting vehicles(northBound): [Car 21]
+Waiting vehicles(southBound): [Car 18]
+Vehicles on the bridge(northBound): [Car 17, Car 11, Car 9]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #17 (northbound) EXITING...
+Waiting vehicles(northBound): [Car 21]
+Waiting vehicles(southBound): [Car 18]
+Vehicles on the bridge(northBound): [Car 11, Car 9]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #21 (northbound) CROSSING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Car 18]
+Vehicles on the bridge(northBound): [Car 11, Car 9, Car 21]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #11 (northbound) EXITING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Car 18]
+Vehicles on the bridge(northBound): [Car 9, Car 21]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 1 Car #9 (northbound) EXITING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Car 18]
+Vehicles on the bridge(northBound): [Car 21]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #21 (northbound) EXITING...
+no vehicle waiting on northBound
+Waiting vehicles(southBound): [Car 18]
+no vehicle crossing on bridge
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #18 (southbound) CROSSING...
+no vehicle waiting on northBound
+no vehicle waiting on southBound
+Vehicles on the bridge(southBound): [Car 18]
+-------------------------------------------------------------
+-------------------------------------------------------------
+Group 2 Car #18 (southbound) EXITING...
+no vehicle waiting on northBound
+no vehicle waiting on southBound
+no vehicle crossing on bridge
+-------------------------------------------------------------
