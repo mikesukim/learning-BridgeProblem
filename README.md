@@ -1,3 +1,5 @@
+# This project is completed.
+
 # file list
 * bridge_crossing.c
 * makefile
